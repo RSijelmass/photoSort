@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String EXTRA_PICTURE = "com.example.photosort.PICTUREPATH";
     private static int RESULT_LOAD_IMAGE = 1;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -35,12 +36,11 @@ public class MainActivity extends AppCompatActivity {
         buttonLoadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Intent i = new Intent(
+                Intent intent = new Intent(
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
-                System.out.println("URI: " + android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+                startActivityForResult(intent, RESULT_LOAD_IMAGE);
             }
         });
     }
@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
             // String picturePath contains the path of selected Image
-
-            ImageView imageView = (ImageView) findViewById(R.id.ivPreview);
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            Intent intent = new Intent(this, ViewImageActivity.class);
+            intent.putExtra(EXTRA_PICTURE, picturePath);
+            startActivity(intent);
         }
     }
 

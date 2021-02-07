@@ -3,7 +3,9 @@ package com.example.photosort;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
@@ -24,6 +26,12 @@ public class ViewImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_image);
 
-        //imageView = (ImageView) findViewById(R.id.ivPreview);
+        Intent intent = getIntent();
+        String picturePath = intent.getStringExtra(MainActivity.EXTRA_PICTURE);
+
+        ImageView imageView = (ImageView) findViewById(R.id.ivPreview);
+        imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+
+        System.out.println("DATA IN VIEWIMAGE: " + picturePath);
     }
 }
