@@ -18,12 +18,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String EXTRA_PICTURE = "com.example.photosort.PICTUREPATH";
+    public static final String EXTRA_PICTURE_PATH = "com.example.photosort.PICTUREPATH";
+    public static final String EXTRA_PICTURE_URI = "com.example.photosort.PICTUREURI";
     private static int RESULT_LOAD_IMAGE = 1;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_SECURE_SETTINGS,
+            Manifest.permission.DELETE_PACKAGES,
+            Manifest.permission.MANAGE_EXTERNAL_STORAGE,
+            Manifest.permission.MEDIA_CONTENT_CONTROL
     };
 
     @Override
@@ -39,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(
                         Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
                 startActivityForResult(intent, RESULT_LOAD_IMAGE);
             }
         });
@@ -60,7 +64,10 @@ public class MainActivity extends AppCompatActivity {
             cursor.close();
             // String picturePath contains the path of selected Image
             Intent intent = new Intent(this, ViewImageActivity.class);
-            intent.putExtra(EXTRA_PICTURE, picturePath);
+            intent.putExtra(EXTRA_PICTURE_PATH, picturePath);
+            intent.setData(selectedImage);
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//            intent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             startActivity(intent);
         }
     }
